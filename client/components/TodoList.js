@@ -25,7 +25,7 @@ const TodoList = ({ tasks, input, setInput, addTask, deleteTask }) => (
       {tasks.map((item) => (
         <Task
           key={item.id}
-          taskText={item.taskText}
+          tasks={item}
           //onclick delete task
           onClick={deleteTask(item.id)}
         />
