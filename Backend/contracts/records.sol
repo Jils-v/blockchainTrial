@@ -17,26 +17,12 @@ contract records{
     // }
 
         struct patientData{
-        address publicAddress;
-        string name;
-        uint age;
         string[] Disease;
         string[] Treatment;
+        string[] TreatmentYear;
         }
 
-        mapping (address => patientData) public record;
-
-        function getName(address _publicAddress) public view returns(string memory)
-        {
-            patientData storage pd = record[_publicAddress];
-            return pd.name;
-        }
-
-        function getAge(address _publicAddress) public view returns(uint)
-        {
-            patientData storage pd = record[_publicAddress];
-            return pd.age;
-        }
+        mapping (address => patientData) record;
 
         function getDisease(address _publicAddress) public view returns(string[] memory)
         {
@@ -50,15 +36,20 @@ contract records{
             return pd.Treatment;
         }
 
-        function addRecord(address _publicAddress, string memory _name, uint _age, string[] memory _disease, string[] memory _treatment) public {
-            record[_publicAddress] = patientData(_publicAddress, _name, _age, _disease, _treatment);
+        function getTreatmentYear(address _publicAddress) public view returns(string[] memory)
+        {
+            patientData storage pd = record[_publicAddress];
+            return pd.TreatmentYear;
         }
 
-        function updateRecord(address _publicAddress, string memory _name, uint _age, string[] memory _disease, string[] memory _treatment) public {
+        function addRecord(address _publicAddress, string[] memory _disease, string[] memory _treatment, string[] memory _treatmentYear) public {
+            record[_publicAddress] = patientData(_disease, _treatment, _treatmentYear);
+        }
+
+        function updateRecord(address _publicAddress, string[] memory _disease, string[] memory _treatment, string[] memory _treatmentYear) public {
             patientData storage pd = record[_publicAddress];
             pd.Disease = _disease;
             pd.Treatment = _treatment;
-            pd.name = _name;
-            pd.age = _age;
+            pd.TreatmentYear = _treatmentYear;
         }
 }
