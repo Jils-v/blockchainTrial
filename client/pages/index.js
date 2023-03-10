@@ -18,7 +18,12 @@ export default function Home() {
   const [correctNetwork, setcorrectNetwork] = useState(false);
   const [isUserLoggedIn, setisUserLoggedIn] = useState(false);
   const [currentAccount, setCurrentAccount] = useState("");
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState({
+    name: "yash",
+    age: 20,
+    Disease: "nothing",
+    Treatment: "no",
+  });
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
@@ -61,6 +66,7 @@ export default function Home() {
     try {
       const { ethereum } = window;
       if (ethereum) {
+        console.log(ethereum);
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         const TaskContract = new ethers.Contract(TaskContractAddress, TaskAbi.abi, signer);
@@ -80,17 +86,27 @@ export default function Home() {
     e.preventDefault(); //avoid refresh
 
     var task = {
-      taskText: input,
-      isDeleted: false,
+      publicAddress: currentAccount,
+      name: input.name,
+      age: input.age,
+      Disease: [input.Disease],
+      Treatment: [input.Treatment],
     };
 
     try {
       const { ethereum } = window;
       if (ethereum) {
+        console.log(ethereum);
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         const TaskContract = new ethers.Contract(TaskContractAddress, TaskAbi.abi, signer);
-        TaskContract.addTask(task.taskText, task.isDeleted)
+        TaskContract.addRecord(
+          task.publicAddress,
+          task.name,
+          task.age,
+          task.Disease,
+          task.Treatment
+        )
           .then((res) => {
             console.log("res", res);
             setTasks([...tasks, task]);
@@ -105,7 +121,7 @@ export default function Home() {
     } catch (error) {
       console.log(error);
     }
-    setInput("");
+    // setInput(""); this is comment for now
   };
 
   // Remove tasks from front-end by filtering it out on our "back-end" / blockchain smart contract
