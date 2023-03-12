@@ -7,6 +7,8 @@ const slice = createSlice({
     isUserLoggedIn: false,
     currentAccount: "",
     isConnected: false,
+    Hospitals: [],
+    Patients: [],
     userPersonalDetail: {
       name: "",
       phone: "",
@@ -36,6 +38,9 @@ const slice = createSlice({
     setlogout: (state, actions) => {
       state.isConnected = false;
     },
+    sethospitaldata: (state, actions) => {
+      state.Hospitals.push(actions.payload);
+    },
   },
   extraReducers: (builder) => {
     // builder.addCase(sampThunk.pending, (state, actions) => {
@@ -52,5 +57,5 @@ const slice = createSlice({
   },
 });
 
-export const { setuser, setconnect, setpatientdata } = slice.actions;
+export const { setuser, setconnect, setpatientdata, sethospitaldata } = slice.actions;
 export default slice.reducer;

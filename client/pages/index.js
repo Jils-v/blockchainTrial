@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Connect from "../components/Connect";
 import CreateAccount from "../components/CreateAccount";
 import User from "./page/User";
-import Doctor from "./page/Doctor";
+import Hospital from "./page/Hospital";
 import Admin from "./page/Admin";
 
 export default function Home() {
@@ -21,8 +21,8 @@ export default function Home() {
         <Connect />
       ) : data.usertype == "patient" ? (
         <User />
-      ) : data.usertype == "doctor" ? (
-        <Doctor />
+      ) : data.usertype == "hospital" ? (
+        <Hospital />
       ) : data.usertype == "admin" ? (
         <Admin />
       ) : data.usertype == "none" ? (

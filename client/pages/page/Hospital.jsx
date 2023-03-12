@@ -1,7 +1,7 @@
 import React from "react";
 
-function Doctor() {
+function Hospital() {
   return <div>this is hospital pages</div>;
 }
 
-export default Doctor;
+export default Hospital;

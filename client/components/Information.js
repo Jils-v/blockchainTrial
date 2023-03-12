@@ -5,25 +5,6 @@ import Register from "../../backend/build/contracts/register.json";
 import { ethers } from "ethers";
 
 export default function Information() {
-  // const dispatch = useDispatch();
-  // const detailChange = async () => {
-  //   if (data.userPersonalDetail.name == "") {
-  //     try {
-  //       const { ethereum } = window;
-  //       if (ethereum) {
-  //         const provider = new ethers.providers.Web3Provider(ethereum);
-  //         const signer = provider.getSigner();
-  //         const Contract = new ethers.Contract(contract2, TaskAbi.abi, signer);
-  //         let detail = await Contract.getPatientDetail();
-  //         dispatch();
-  //       } else {
-  //         console.log("Ethereum Object does not exists");
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // };
   const data = useSelector((state) => {
     return state.slice;
   });
