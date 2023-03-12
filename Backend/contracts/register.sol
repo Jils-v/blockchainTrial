@@ -17,7 +17,7 @@ contract register{
         string hospitalAddress;
     }
 
-    address admin = 0xDfF6A078Eac1279823eD8189bB2ccd137bFc12e0;
+    address admin = 0x0C94a7382420E02cF69b2FE7e0cB24d0fa79CcDF;
     mapping (address => patientDetails) patient;
     mapping (address => hospitalDetails) hospital;
     string[][] hospitals;

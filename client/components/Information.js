@@ -1,15 +1,40 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { MdDelete, MdOutlineAddCircle } from "react-icons/md";
+import { contract2 } from "../confing";
+import Register from "../../backend/build/contracts/register.json";
+import { ethers } from "ethers";
 
 export default function Information() {
+  // const dispatch = useDispatch();
+  // const detailChange = async () => {
+  //   if (data.userPersonalDetail.name == "") {
+  //     try {
+  //       const { ethereum } = window;
+  //       if (ethereum) {
+  //         const provider = new ethers.providers.Web3Provider(ethereum);
+  //         const signer = provider.getSigner();
+  //         const Contract = new ethers.Contract(contract2, TaskAbi.abi, signer);
+  //         let detail = await Contract.getPatientDetail();
+  //         dispatch();
+  //       } else {
+  //         console.log("Ethereum Object does not exists");
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // };
   const data = useSelector((state) => {
     return state.slice;
   });
   return (
-    <div className=" flex bg-gray-800 py-20  justify-center  min-h-screen min-w-screen">
-      <div className="  container max-w-2xl md:w-3/4   bg-white shadow rounded-2xl">
-        <div className="px-3 py-5 sm:px-6 ">
-          <h3 className="text-2xl font-semibold leading-6 text-gray-900">Public Address</h3>
-          <p className="mt-1   max-w-2xl max-sm:text-base  text-gray-500">{data.currentAccount}</p>
+    <div className=" flex bg-gray-900 py-20  justify-center  min-h-screen min-w-screen">
+      <div className="  container max-w-2xl md:w-3/4   bg-white  shadow-2xl rounded-2xl">
+        <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <div className="text-2xl font-semibold leading-6 text-gray-900">Public Address</div>
+          <div className="mt-1 text-sm text-gray-900 sm:col-span-3 sm:mt-0">
+            {data.currentAccount}
+          </div>
         </div>
         <div className="border-t bg-transparent border-gray-200">
           <dl>
@@ -28,13 +53,13 @@ export default function Information() {
             <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Email address</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                {data.userPersonalDetail.email}
+                {data.userPersonalDetail.mail}
               </dd>
             </div>
             <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Address</dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                {data.userPersonalDetail.address}
+              <dd className="mt-1 text-sm text-gray-900 sm:col-span-3 sm:mt-0">
+                {data.userPersonalDetail.residentAddress}
               </dd>
             </div>
             <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -50,59 +75,24 @@ export default function Information() {
               </dd>
             </div>
             <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Treatment</dt>
+              <dt className="text-sm font-medium text-gray-500">Access</dt>
+
               <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                <dt className="text-sm flex items-center justify-between  font-medium overflow-hidden text-gray-500 ">
+                  <h3 className="text-lg text-black">Add</h3>
+                  <MdOutlineAddCircle className="text-2xl hover:cursor-pointer " />
+                </dt>
                 <ul
                   role="list"
                   className="divide-y divide-gray-200 rounded-md border border-gray-200"
                 >
                   <li className="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
                     <div className="flex w-0 flex-1 items-center">
-                      <svg
-                        className="h-5 w-5 flex-shrink-0 text-gray-400"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M15.621 4.379a3 3 0 00-4.242 0l-7 7a3 3 0 004.241 4.243h.001l.497-.5a.75.75 0 011.064 1.057l-.498.501-.002.002a4.5 4.5 0 01-6.364-6.364l7-7a4.5 4.5 0 016.368 6.36l-3.455 3.553A2.625 2.625 0 119.52 9.52l3.45-3.451a.75.75 0 111.061 1.06l-3.45 3.451a1.125 1.125 0 001.587 1.595l3.454-3.553a3 3 0 000-4.242z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
                       <span className="ml-2 w-0 flex-1 truncate">
                         resume_back_end_developer.pdf
                       </span>
                     </div>
-                    <div className="ml-4 flex-shrink-0">
-                      <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                        Download
-                      </a>
-                    </div>
-                  </li>
-                  <li className="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
-                    <div className="flex w-0 flex-1 items-center">
-                      <svg
-                        className="h-5 w-5 flex-shrink-0 text-gray-400"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M15.621 4.379a3 3 0 00-4.242 0l-7 7a3 3 0 004.241 4.243h.001l.497-.5a.75.75 0 011.064 1.057l-.498.501-.002.002a4.5 4.5 0 01-6.364-6.364l7-7a4.5 4.5 0 016.368 6.36l-3.455 3.553A2.625 2.625 0 119.52 9.52l3.45-3.451a.75.75 0 111.061 1.06l-3.45 3.451a1.125 1.125 0 001.587 1.595l3.454-3.553a3 3 0 000-4.242z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
-                      <span className="ml-2 w-0 flex-1 truncate">
-                        coverletter_back_end_developer.pdf
-                      </span>
-                    </div>
-                    <div className="ml-4 flex-shrink-0">
-                      <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                        Download
-                      </a>
-                    </div>
+                    <MdDelete className="text-2xl text-gray-700 hover:cursor-pointer hover:text-red-500" />
                   </li>
                 </ul>
               </dd>

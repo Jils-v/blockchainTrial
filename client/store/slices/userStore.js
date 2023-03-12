@@ -4,43 +4,37 @@ const slice = createSlice({
   name: "user",
   initialState: {
     usertype: "",
-    isUserFound: false,
-    // isUserLoggedIn: false,
+    isUserLoggedIn: false,
     currentAccount: "",
     isConnected: false,
     userPersonalDetail: {
       name: "",
       phone: "",
-      email: "",
-      address: "",
+      mail: "",
+      residentAddress: "",
       treatment: "",
       disease: "",
     },
   },
   reducers: {
     setuser: (state, actions) => {
-      state.user = actions.payload;
+      state.usertype = actions.payload;
     },
-    setfound: (state, actions) => {
-      state.isUserFound = actions.payload;
-    },
-    setLogin: (state, actions) => {
-      state.isUserLoggedIn = actions.payload;
-    },
+
     setconnect: (state, actions) => {
-      console.log(actions.payload);
       state.isConnected = actions.payload.isconnect;
       state.currentAccount = actions.payload.account;
     },
-    createuser: (state, actions) => {
+    setpatientdata: (state, actions) => {
       state.userPersonalDetail = {
         name: actions.payload.name,
+        mail: actions.payload.mail,
         phone: actions.payload.phone,
-        email: actions.payload.email,
-        address: actions.payload.address,
+        residentAddress: actions.payload.residentAddress,
       };
-      state.usertype = "patient";
-      state.isUserFound = true;
+    },
+    setlogout: (state, actions) => {
+      state.isConnected = false;
     },
   },
   extraReducers: (builder) => {
@@ -58,5 +52,5 @@ const slice = createSlice({
   },
 });
 
-export const { setuser, setconnect, createuser } = slice.actions;
+export const { setuser, setconnect, setpatientdata } = slice.actions;
 export default slice.reducer;

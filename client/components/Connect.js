@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
-import { setconnect } from "../store/slices/userStore";
+import { setconnect, setuser, setpatientdata } from "../store/slices/userStore";
 import { useDispatch, useSelector } from "react-redux";
+import { contract2 } from "../confing";
+import Register from "../../backend/build/contracts/register.json";
+import { ethers } from "ethers";
 
 function Connect() {
   useEffect(() => {
@@ -20,6 +23,24 @@ function Connect() {
       }
       const accounts = await ethereum.request({ method: "eth_requestAccounts" });
       console.log("Found Account :", accounts[0]);
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const Contract = new ethers.Contract(contract2, Register.abi, signer);
+      const usertype = await Contract.check(accounts[0]);
+      console.log("user", usertype);
+      if (usertype !== "none") {
+        const detail = await Contract.getPatientDetail(accounts[0]);
+        dispatch(
+          setpatientdata({
+            name: detail.name,
+            mail: detail.mail,
+            phone: Number(detail.phone),
+            residentAddress: detail.residentAddress,
+          })
+        );
+      }
+      dispatch(setuser(usertype));
+
       dispatch(setconnect({ isconnect: true, account: accounts[0] }));
     } catch (error) {
       console.log(error);

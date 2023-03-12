@@ -1,12 +1,7 @@
 import React from "react";
-import TodoList from "../../components/TodoList";
 
 function Doctor() {
-  return (
-    <div>
-      <TodoList />
-    </div>
-  );
+  return <div>this is hospital pages</div>;
 }
 
 export default Doctor;

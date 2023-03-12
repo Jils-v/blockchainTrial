@@ -1,12 +1,12 @@
 import React from "react";
 import Information from "../../components/Information";
-import List from "../../components/Information";
+import UserList from "../../components/HospitalList";
 
 function User() {
   return (
     <div>
-      {/* <Information /> */}
-      <List />
+      <Information />
+      {/* <UserList /> */}
     </div>
   );
 }

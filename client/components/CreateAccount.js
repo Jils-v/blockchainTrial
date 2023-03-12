@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { FaHome } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { createuser } from "../store/slices/userStore";
-import { TaskContractAddress } from "../confing";
-import TaskAbi from "../../backend/build/contracts/records.json";
+import { setpatientdata } from "../store/slices/userStore";
+import { contract2 } from "../confing";
+import Register from "../../backend/build/contracts/register.json";
 import { ethers } from "ethers";
 
 function CreateAccount() {
@@ -11,8 +11,8 @@ function CreateAccount() {
   const [detail, setdetail] = useState({
     name: "",
     phone: 0,
-    email: "",
-    address: "",
+    mail: "",
+    residentAddress: "",
   });
   const data = useSelector((state) => {
     return state.slice;
@@ -25,34 +25,35 @@ function CreateAccount() {
   const create = async (e) => {
     e.preventDefault();
     console.log(detail);
-    dispatch(createuser(detail));
-    // try {
-    //   const { ethereum } = window;
-    //   if (ethereum) {
-    //     const provider = new ethers.providers.Web3Provider(ethereum);
-    //     const signer = provider.getSigner();
-    //     const AddUserrecord = new ethers.Contract(TaskContractAddress, TaskAbi.abi, signer);
-    //     AddUserrecord.registerPatient(
-    //       data.currentAccount,
-    //       detail.name,
-    //       detail.phone,
-    //       detail.email,
-    //       detail.address
-    //     )
-    //       .then((res) => {
-    //         console.log("res", res);
-    //         dispatch(createuser(detail));
-    //         console.log("Added Task");
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    //       });
-    //   } else {
-    //     console.log("Ethereum Object does not exists");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
+
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const Contract = new ethers.Contract(contract2, Register.abi, signer);
+        Contract.registerPatient(
+          data.currentAccount,
+          detail.name,
+          detail.phone,
+          detail.mail,
+          detail.residentAddress
+        )
+          .then((res) => {
+            console.log("res", res);
+            dispatch(setpatientdata(detail));
+            dispatch(setuser("patient"));
+            console.log("Added Task");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        console.log("Ethereum Object does not exists");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div>
@@ -99,7 +100,7 @@ function CreateAccount() {
                   </div>
                   <input
                     type="email"
-                    name="email"
+                    name="mail"
                     className="w-11/12 focus:outline-none focus:text-gray-600 p-2"
                     placeholder="XYZ@email.com"
                     onChange={onchange}
@@ -183,7 +184,7 @@ function CreateAccount() {
                     rows={2}
                     cols={100}
                     type="textarea"
-                    name="address"
+                    name="residentAddress"
                     className=" focus:outline-none focus:text-gray-600 p-2 ml-4"
                     placeholder="Address"
                     onChange={onchange}
