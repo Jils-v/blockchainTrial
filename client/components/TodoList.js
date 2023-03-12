@@ -9,7 +9,7 @@ function TodoList({ tasks, input, setInput, addTask, deleteTask }) {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
   return (
-    <div className=" max-lg:w-[70%] bg-[#354ea3] py-4 px-9 rounded-[30px] overflow-y-scroll">
+    <div className=" max-lg:w-[70%] bg-gray-800 py-4 px-9 rounded-[30px] overflow-y-scroll">
       <Navbar />
       <h2 className="text-4xl bolder text-white pb-8">What&apos;s up, {input.name}!</h2>
       <div className="py-3 text-[#7d99e9]">Add the Data</div>

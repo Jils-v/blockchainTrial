@@ -5,63 +5,27 @@ import { TaskContractAddress } from "../confing";
 import TaskAbi from "../../backend/build/contracts/records.json";
 import { ethers } from "ethers";
 import { useState, useEffect } from "react";
-
-/* 
-const tasks = [
-  { id: 0, taskText: 'clean', isDeleted: false }, 
-  { id: 1, taskText: 'food', isDeleted: false }, 
-  { id: 2, taskText: 'water', isDeleted: true }
-]
-*/
+import { useDispatch, useSelector } from "react-redux";
+import { setuser } from "../store/slices/userStore";
+import Connect from "../components/Connect";
+import CreateAccount from "../components/CreateAccount";
+import User from "./page/User";
+import Doctor from "./page/Doctor";
 
 export default function Home() {
-  const [correctNetwork, setcorrectNetwork] = useState(false);
-  const [isUserLoggedIn, setisUserLoggedIn] = useState(false);
-  const [currentAccount, setCurrentAccount] = useState("");
   const [input, setInput] = useState({
     name: "yash",
-    age: 20,
-    Disease: "nothing",
+    age: 22,
+    Disease: "no",
     Treatment: "no",
   });
   const [tasks, setTasks] = useState([]);
+  const dispatch = useDispatch();
+  const data = useSelector((state) => {
+    return state.slice;
+  });
+  console.log(data);
 
-  useEffect(() => {
-    connectWallet();
-    getAllTasks();
-  }, []);
-
-  // Calls Metamask to connect wallet on clicking Connect Wallet button
-  const connectWallet = async () => {
-    try {
-      const { ethereum } = window;
-      if (!ethereum) {
-        console.log("MetaMask not detected");
-        return;
-      }
-
-      let chainId = await ethereum.request({ method: "eth_chainId" });
-      console.log("connected to chain :", chainId);
-      // const rinkebyChainId = "0x4";
-      const GanacheId = "0x539";
-
-      if (chainId != GanacheId) {
-        alert("your are not connected to rinkeby testnet! ");
-        setcorrectNetwork(false);
-        return;
-      } else {
-        setcorrectNetwork(true);
-      }
-      const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-      console.log("Found Account :", accounts[0]);
-      setisUserLoggedIn(true);
-      setCurrentAccount(accounts[0]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // Just gets all the tasks from the contract
   const getAllTasks = async () => {
     try {
       const { ethereum } = window;
@@ -145,19 +109,29 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-[#97b5fe] h-screen w-screen flex justify-center py-6">
-      {!isUserLoggedIn ? (
-        <ConnectWalletButton connectWallet={connectWallet} />
-      ) : correctNetwork ? (
-        <TodoList
-          tasks={tasks}
-          input={input}
-          setInput={setInput}
-          addTask={addTask}
-          deleteTask={deleteTask}
-        />
+    <div className="overflow-hidden ">
+      {!data.isConnected ? (
+        <Connect />
+      ) : data.isUserFound ? (
+        data.usertype == "patient" ? (
+          <User />
+        ) : data.usertype == "doctor" ? (
+          <Doctor />
+        ) : data.usertype == "admin" ? (
+          <TodoList
+            tasks={tasks}
+            input={input}
+            setInput={setInput}
+            addTask={addTask}
+            deleteTask={deleteTask}
+          />
+        ) : data.usertype == "" ? (
+          <CreateAccount />
+        ) : (
+          []
+        )
       ) : (
-        <WrongNetworkMessage />
+        <CreateAccount />
       )}
     </div>
   );
