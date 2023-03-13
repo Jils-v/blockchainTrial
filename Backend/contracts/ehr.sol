@@ -1,9 +1,69 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.0 <=0.9.0;
 
-contract register{
+contract ehr{
+    // struct patientData{
+    //     address publicAddress;
+    //     string name;
+    //     uint age;
+    //     string Disease;
+    //     string Treatment;
+    // }
 
-    struct patientDetails{
+    // mapping (address => patientData) public record;
+
+    // function setter(address _publicAddress, string memory _name, uint _age, string memory _disease, string memory _treatment) public {
+    //     record[_publicAddress] = patientData(_publicAddress, _name, _age, _disease, _treatment);
+    // }
+
+        struct patientData{
+        string[] Disease;
+        string[] Treatment;
+        string[] TreatmentYear;
+        }
+
+        mapping (address => patientData) record;
+
+        function getRecord (address _publicAddress) public view returns(patientData memory)
+        {
+            return record[_publicAddress];
+        }
+
+        // function getDisease(address _publicAddress) public view returns(string[] memory)
+        // {
+        //     patientData storage pd = record[_publicAddress];
+        //     return pd.Disease;
+        // }
+
+        // function getTreatment(address _publicAddress) public view returns(string[] memory)
+        // {
+        //     patientData storage pd = record[_publicAddress];
+        //     return pd.Treatment;
+        // }
+
+        // function getTreatmentYear(address _publicAddress) public view returns(string[] memory)
+        // {
+        //     patientData storage pd = record[_publicAddress];
+        //     return pd.TreatmentYear;
+        // }
+
+        function addRecord(address _publicAddress, string[] memory _disease, string[] memory _treatment, string[] memory _treatmentYear) public {
+            record[_publicAddress] = patientData(_disease, _treatment, _treatmentYear);
+        }
+
+        function updateRecord(address _publicAddress, string[] memory _disease, string[] memory _treatment, string[] memory _treatmentYear) public {
+            patientData storage pd = record[_publicAddress];
+            pd.Disease = _disease;
+            pd.Treatment = _treatment;
+            pd.TreatmentYear = _treatmentYear;
+        }
+
+
+        //-----------------------------------------------------------------------------
+
+
+
+         struct patientDetails{
         string name;
         uint64 phone;
         string mail;
@@ -20,7 +80,7 @@ contract register{
     address admin = 0xb19A2670A054E9e1873D20556BF1be3dA8C6A33a;
     mapping (address => patientDetails) patient;
     mapping (address => hospitalDetails) hospital;
-    string[][] hospitals;
+    hospitalDetails[] hospitals;
 
     function registerPatient(address _publicAddress, string memory _name, uint64 _phone, string memory _mail, string memory _residentAddress) public{
         patient[_publicAddress] = patientDetails(_name, _phone, _mail, _residentAddress);
@@ -28,7 +88,7 @@ contract register{
 
     function registerhospital(address _publicAddress,  string memory _name, uint64 _phone, string memory _mail, string memory _hospitalAddress) public{
         hospital[_publicAddress] = hospitalDetails(_name, _phone, _mail, _hospitalAddress);
-        hospitals.push([_name, _mail, _hospitalAddress]);
+        hospitals.push(hospitalDetails(_name, _phone, _mail, _hospitalAddress));
     }
 
     function updatePatient(address _publicAddress, string memory _name, uint64 _phone, string memory _mail, string memory _residentAddress) public {
@@ -65,7 +125,7 @@ contract register{
         return user;
     }
 
-    function getAllHospital() public view returns(string[][] memory)
+    function getAllHospital() public view returns(hospitalDetails[] memory)
     {
         return hospitals;
     }

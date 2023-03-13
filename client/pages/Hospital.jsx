@@ -1,6 +1,6 @@
 import React from "react";
 
-function Hospital() {
+function Hospital({ Con }) {
   return <div>this is hospital pages</div>;
 }
 

@@ -1,12 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { MdDelete, MdOutlineAddCircle } from "react-icons/md";
-import { contract2 } from "../confing";
-import Register from "../../backend/build/contracts/register.json";
-import { ethers } from "ethers";
 
 export default function Information() {
   const data = useSelector((state) => {
-    return state.slice;
+    return state.patient;
   });
   return (
     <div className=" flex bg-gray-900 py-20  justify-center  min-h-screen min-w-screen">
@@ -14,7 +11,7 @@ export default function Information() {
         <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
           <div className="text-2xl font-semibold leading-6 text-gray-900">Public Address</div>
           <div className="mt-1 text-sm text-gray-900 sm:col-span-3 sm:mt-0">
-            {data.currentAccount}
+            {/* {data.currentAccount} */}
           </div>
         </div>
         <div className="border-t bg-transparent border-gray-200">

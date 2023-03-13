@@ -1,33 +1,21 @@
 import React, { useEffect } from "react";
-import { setconnect, setuser, setpatientdata } from "../store/slices/userStore";
-import { useDispatch, useSelector } from "react-redux";
-import { contract2 } from "../confing";
-import Register from "../../backend/build/contracts/register.json";
-import { ethers } from "ethers";
+import { setpatientdata } from "../store/slices/PatientStore";
+import { setconnect, setuser } from "../store/slices/UserStore";
+import { useDispatch } from "react-redux";
 
-function Connect() {
+function Connect({ Con }) {
   useEffect(() => {
     connectWallet();
   }, []);
+
   const dispatch = useDispatch();
-
-  const data = useSelector((state) => {
-    return state.slice;
-  });
-
   const connectWallet = async () => {
     try {
       const { ethereum } = window;
-      if (!ethereum) {
-        alert("Metamak not found");
-      }
+
       const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-      console.log("Found Account :", accounts[0]);
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
-      const Contract = new ethers.Contract(contract2, Register.abi, signer);
+      const Contract = Con();
       const usertype = await Contract.check(accounts[0]);
-      console.log("user", usertype);
       if (usertype !== "none") {
         if (usertype == "patient") {
           const detail = await Contract.getPatientDetail(accounts[0]);
@@ -42,7 +30,6 @@ function Connect() {
         }
       }
       dispatch(setuser(usertype));
-
       dispatch(setconnect({ isconnect: true, account: accounts[0] }));
     } catch (error) {
       console.log(error);

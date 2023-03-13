@@ -1,32 +1,45 @@
 import WrongNetworkMessage from "../components/WrongNetworkMessage";
-
+import { conAdd } from "../confing";
 import { ethers } from "ethers";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Connect from "../components/Connect";
 import CreateAccount from "../components/CreateAccount";
-import User from "./page/User";
-import Hospital from "./page/Hospital";
-import Admin from "./page/Admin";
+import User from "./User";
+import Hospital from "./Hospital";
+import Admin from "./Admin";
+import ehr from "../../Backend/build/contracts/ehr.json";
+import { useEffect } from "react";
 
 export default function Home() {
+  useEffect(() => {
+    var { ethereum } = window;
+    if (!ethereum) {
+      alert("metamask not found");
+    }
+  }, []);
+
+  const Cont = () => {
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+    const Contract = new ethers.Contract(conAdd, ehr.abi, signer);
+    return Contract;
+  };
   const data = useSelector((state) => {
-    return state.slice;
+    return state.usertype;
   });
-  console.log(data);
 
   return (
     <div className="overflow-hidden ">
       {!data.isConnected ? (
-        <Connect />
+        <Connect Con={Cont} />
       ) : data.usertype == "patient" ? (
-        <User />
+        <User Con={Cont} />
       ) : data.usertype == "hospital" ? (
-        <Hospital />
+        <Hospital Con={Cont} />
       ) : data.usertype == "admin" ? (
-        <Admin />
+        <Admin Con={Cont} />
       ) : data.usertype == "none" ? (
-        <CreateAccount />
+        <CreateAccount Con={Cont} />
       ) : (
         <WrongNetworkMessage />
       )}

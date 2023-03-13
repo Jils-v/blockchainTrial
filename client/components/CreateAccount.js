@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { FaHome } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { setpatientdata, setuser } from "../store/slices/userStore";
-import { contract2 } from "../confing";
-import Register from "../../backend/build/contracts/register.json";
-import { ethers } from "ethers";
+import { setuser } from "../store/slices/UserStore";
+import { setpatientdata } from "../store/slices/PatientStore";
 
-function CreateAccount() {
+function CreateAccount({ Con }) {
   const dispatch = useDispatch();
   const [detail, setdetail] = useState({
     name: "",
@@ -17,6 +15,9 @@ function CreateAccount() {
   const data = useSelector((state) => {
     return state.slice;
   });
+  const d = useSelector((state) => {
+    return state.usertype;
+  });
 
   const onchange = (e) => {
     setdetail({ ...detail, [e.target.name]: e.target.value });
@@ -24,33 +25,19 @@ function CreateAccount() {
 
   const create = async (e) => {
     e.preventDefault();
-    console.log(detail);
 
     try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const Contract = new ethers.Contract(contract2, Register.abi, signer);
-        Contract.registerPatient(
-          data.currentAccount,
-          detail.name,
-          detail.phone,
-          detail.mail,
-          detail.residentAddress
-        )
-          .then((res) => {
-            console.log("res", res);
-            dispatch(setpatientdata(detail));
-            dispatch(setuser("patient"));
-            console.log("Added Task");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        console.log("Ethereum Object does not exists");
-      }
+      const Contract = Con();
+      Contract.registerPatient(
+        d.currentAccount,
+        detail.name,
+        detail.phone,
+        detail.mail,
+        detail.residentAddress
+      ).then((res) => {
+        dispatch(setpatientdata(detail));
+        dispatch(setuser("patient"));
+      });
     } catch (error) {
       console.log(error);
     }

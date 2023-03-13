@@ -1,19 +1,16 @@
 import React, { useState } from "react";
 import { FaHome } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { sethospitaldata } from "../store/slices/userStore";
-import { contract2 } from "../confing";
-import Register from "../../backend/build/contracts/register.json";
-import { ethers } from "ethers";
+import { sethospitaldata } from "../store/slices/AdminStore";
 
-function CreateHospital() {
+function CreateHospital({ Con }) {
   const dispatch = useDispatch();
   const [detail, setdetail] = useState({
     publicAddress: "",
     name: "",
     phone: 0,
     mail: "",
-    residentAddress: "",
+    hospitalAddress: "",
   });
 
   const onchange = (e) => {
@@ -21,30 +18,21 @@ function CreateHospital() {
   };
   const create = async (e) => {
     e.preventDefault();
-    console.log(detail);
-
     try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const Contract = new ethers.Contract(contract2, Register.abi, signer);
-        Contract.registerhospital(
-          detail.publicAddress,
-          detail.name,
-          detail.phone,
-          detail.mail,
-          detail.residentAddress
-        )
-          .then((res) => {
-            dispatch(sethospitaldata(detail));
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        console.log("Ethereum Object does not exists");
-      }
+      const Contract = Con();
+      Contract.registerhospital(
+        detail.publicAddress,
+        detail.name,
+        detail.phone,
+        detail.mail,
+        detail.hospitalAddress
+      )
+        .then((res) => {
+          dispatch(sethospitaldata(detail));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -169,7 +157,7 @@ function CreateHospital() {
                   rows={2}
                   cols={100}
                   type="textarea"
-                  name="residentAddress"
+                  name="hospitalAddress"
                   className=" focus:outline-none focus:text-gray-600 p-2 ml-4"
                   placeholder="Address"
                   onChange={onchange}
