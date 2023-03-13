@@ -20,7 +20,7 @@ contract register{
     address admin = 0x0C94a7382420E02cF69b2FE7e0cB24d0fa79CcDF;
     mapping (address => patientDetails) patient;
     mapping (address => hospitalDetails) hospital;
-    string[][] hospitals;
+    hospitalDetails[] hospitals;
 
     function registerPatient(address _publicAddress, string memory _name, uint64 _phone, string memory _mail, string memory _residentAddress) public{
         patient[_publicAddress] = patientDetails(_name, _phone, _mail, _residentAddress);
@@ -28,7 +28,7 @@ contract register{
 
     function registerhospital(address _publicAddress,  string memory _name, uint64 _phone, string memory _mail, string memory _hospitalAddress) public{
         hospital[_publicAddress] = hospitalDetails(_name, _phone, _mail, _hospitalAddress);
-        hospitals.push([_name, _mail, _hospitalAddress]);
+        hospitals.push(hospitalDetails(_name, _phone, _mail, _hospitalAddress));
     }
 
     function updatePatient(address _publicAddress, string memory _name, uint64 _phone, string memory _mail, string memory _residentAddress) public {
@@ -65,7 +65,7 @@ contract register{
         return user;
     }
 
-    function getAllHospital() public view returns(string[][] memory)
+    function getAllHospital() public view returns(hospitalDetails[] memory)
     {
         return hospitals;
     }
