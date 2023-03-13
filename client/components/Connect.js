@@ -29,15 +29,17 @@ function Connect() {
       const usertype = await Contract.check(accounts[0]);
       console.log("user", usertype);
       if (usertype !== "none") {
-        const detail = await Contract.getPatientDetail(accounts[0]);
-        dispatch(
-          setpatientdata({
-            name: detail.name,
-            mail: detail.mail,
-            phone: Number(detail.phone),
-            residentAddress: detail.residentAddress,
-          })
-        );
+        if (usertype == "patient") {
+          const detail = await Contract.getPatientDetail(accounts[0]);
+          dispatch(
+            setpatientdata({
+              name: detail.name,
+              mail: detail.mail,
+              phone: Number(detail.phone),
+              residentAddress: detail.residentAddress,
+            })
+          );
+        }
       }
       dispatch(setuser(usertype));
 

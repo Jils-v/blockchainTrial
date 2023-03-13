@@ -1,5 +1,5 @@
-export const contract1 = "0xe0F73402180DEd12A329b2b976f396192a78342A";
-export const contract2 = "0x794416F3719acC2309597938BB01c1bA0BB8B7f2";
+export const contract1 = "0xD8A9Dc093CaC956aCA79369e7eb676A122220D9c";
+export const contract2 = "0x5F4061BE5B8C5b2FECcCF82c7846ca2C40dda826";
 
 // import { ethers } from "ethers";
 
